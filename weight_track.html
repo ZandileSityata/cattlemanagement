@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Weight</title>
+    <style>
+        /* Existing styles... */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #D6BD98;
+            color: #1A3636;
+        }
+        header {
+            background-color: #1A3636;
+            color: #D6BD98;
+            padding: 1em 0;
+            text-align: center;
+        }
+        nav {
+            background-color: #40534C;
+            overflow: hidden;
+        }
+        nav a {
+            float: left;
+            display: block;
+            color: #D6BD98;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        nav a.active {
+            background-color: #1A3636;
+            color: #D6BD98;
+        }
+        .container {
+            max-width: 800px;
+            margin: 2em auto;
+            padding: 1em;
+            background-color: #40534C;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: #D6BD98;
+        }
+        .expandable-form {
+            display: none;
+        }
+        .expandable-form.open {
+            display: block;
+        }
+        .toggle-button {
+            background-color: #1A3636;
+            color: #D6BD98;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .toggle-button:hover {
+            background-color: #40534C;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2em;
+        }
+        table, th, td {
+            border: 1px solid #40534C;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #1A3636;
+            color: #D6BD98;
+        }
+        input, select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 5px;
+            border: 1px solid #677D6A;
+            border-radius: 4px;
+            background-color: #D6BD98;
+            color: #1A3636;
+        }
+        .save-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #1A3636;
+            color: #D6BD98;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .save-button:hover {
+            background-color: #40534C;
+        }
+        .status-message {
+            margin-top: 10px;
+            color: #D6BD98;
+            font-weight: bold;
+        }
+        .edit-button, .save-edit-button {
+            background-color: #1A3636;
+            color: #D6BD98;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .edit-button:hover, .save-edit-button:hover {
+            background-color: #40534C;
+        }
+        .form-group {
+            margin-bottom: 1em;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Cattle Management Tool</h1>
+    </header>
+    <nav>
+        <a href="cattleinsights.html">Add Cattle Data</a>
+        <a href="calving_progress.html">Track Calving Females</a>
+        <a href="track_weight.html" class="active">Track Weight</a>
+    </nav>
+    <div class="container" data-page="track_weight.html">
+        <button class="toggle-button" id="toggle-form-button">Show/Hide Weight Form</button>
+        <div class="expandable-form" id="weight-form-container">
+            <form id="weight-form">
+                <div class="form-group">
+                    <div>
+                        <label for="source">Source:</label>
+                        <select id="source" required>
+                            <option value="">Select Source</option>
+                            <option value="Evander">Evander</option>
+                            <option value="Sasol">Sasol</option>
+                            <option value="Bought">Bought</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="fem">Fem:</label>
+                        <input type="text" id="fem" placeholder="Fem" required>
+                    </div>
+                    <div>
+                        <label for="arrival-date">Arrival Date:</label>
+                        <input type="date" id="arrival-date" required>
+                    </div>
+                    <div>
+                        <label for="arrival-weight">Arrival Weight:</label>
+                        <input type="number" id="arrival-weight" placeholder="Arrival Weight" required>
+                    </div>
+                    <div>
+                        <label for="weight-m1">Weight in m1:</label>
+                        <input type="number" id="weight-m1" placeholder="Weight in m1" required>
+                    </div>
+                    <div>
+                        <label for="weight-m2">Weight in m2:</label>
+                        <input type="number" id="weight-m2" placeholder="Weight in m2" required>
+                    </div>
+                    <div>
+                        <label for="weight-m3">Weight in m3:</label>
+                        <input type="number" id="weight-m3" placeholder="Weight in m3" required>
+                    </div>
+                    <div>
+                        <label for="date-of-sale">Date of Sale:</label>
+                        <input type="date" id="date-of-sale" required>
+                    </div>
+                    <div>
+                        <label for="bought-price">Bought Price:</label>
+                        <input type="number" id="bought-price" placeholder="Bought Price" required>
+                    </div>
+                    <div>
+                        <label for="sale-price">Sale Price:</label>
+                        <input type="number" id="sale-price" placeholder="Sale Price" required>
+                    </div>
+                    <div>
+                        <label for="gross-revenue">Gross Revenue:</label>
+                        <input type="number" id="gross-revenue" placeholder="Gross Revenue" required>
+                    </div>
+                </div>
+                <button type="submit" class="save-button">Add Weight Data</button>
+            </form>
+        </div>
+
+        <div class="actions">
+            <button id="export-weight-button">Export Weight Data to CSV</button>
+            <input type="file" id="import-weight-file" accept=".csv">
+            <button id="import-weight-button">Import Weight Data from CSV</button>
+        </div>
+
+        <table id="weight-table">
+            <thead>
+                <tr>
+                    <th>Source</th>
+                    <th>Fem</th>
+                    <th>Arrival Date</th>
+                    <th>Arrival Weight</th>
+                    <th>Weight in m1</th>
+                    <th>Weight in m2</th>
+                    <th>Weight in m3</th>
+                    <th>Date of Sale</th>
+                    <th>Bought Price</th>
+                    <th>Sale Price</th>
+                    <th>Gross Revenue</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be dynamically added here -->
+            </tbody>
+        </table>
+        
+        <div class="status-message" id="status-message"></div>
+    </div>
+
+    <script>
+        let weightData = JSON.parse(localStorage.getItem('weightData')) || [];
+
+        function saveWeightDataToLocalStorage() {
+            localStorage.setItem('weightData', JSON.stringify(weightData));
+        }
+
+        document.getElementById('weight-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newWeight = {
+                source: document.getElementById('source').value,
+                fem: document.getElementById('fem').value,
+                arrivalDate: document.getElementById('arrival-date').value,
+                arrivalWeight: document.getElementById('arrival-weight').value,
+                weightM1: document.getElementById('weight-m1').value,
+                weightM2: document.getElementById('weight-m2').value,
+                weightM3: document.getElementById('weight-m3').value,
+                dateOfSale: document.getElementById('date-of-sale').value,
+                boughtPrice: document.getElementById('bought-price').value,
+                salePrice: document.getElementById('sale-price').value,
+                grossRevenue: document.getElementById('gross-revenue').value
+            };
+            weightData.push(newWeight);
+            saveWeightDataToLocalStorage();
+            updateWeightTable();
+            document.getElementById('weight-form').reset();
+            document.getElementById('status-message').textContent = 'Weight data added successfully!';
+        });
+
+        function updateWeightTable() {
+            const tableBody = document.querySelector('#weight-table tbody');
+            tableBody.innerHTML = '';
+            weightData.forEach((weight, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="text" value="${weight.source}" data-field="source" data-index="${index}"></td>
+                    <td><input type="text" value="${weight.fem}" data-field="fem" data-index="${index}"></td>
+                    <td><input type="date" value="${weight.arrivalDate}" data-field="arrivalDate" data-index="${index}"></td>
+                    <td><input type="number" value="${weight.arrivalWeight}" data-field="arrivalWeight" data-index="${index}"></td>
+                    <td><input type="number" value="${weight.weightM1}" data-field="weightM1" data-index="${index}"></td>
+                    <td><input type="number" value="${weight.weightM2}" data-field="weightM2" data-index="${index}"></td>
+                    <td><input type="number" value="${weight.weightM3}" data-field="weightM3" data-index="${index}"></td>
+                    <td><input type="date" value="${weight.dateOfSale}" data-field="dateOfSale" data-index="${index}"></td>
+                    <td><input type="number" value="${weight.boughtPrice}" data-field="boughtPrice" data-index="${index}"></td>
+                    <td><input type="number" value="${weight.salePrice}" data-field="salePrice" data-index="${index}"></td>
+                    <td><input type="number" value="${weight.grossRevenue}" data-field="grossRevenue" data-index="${index}"></td>
+                    <td>
+                        <button class="save-edit-button" data-index="${index}">Save</button>
+                        <button class="delete-button" data-index="${index}">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        document.getElementById('weight-table').addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-button')) {
+                const index = e.target.getAttribute('data-index');
+                weightData.splice(index, 1);
+                saveWeightDataToLocalStorage();
+                updateWeightTable();
+                document.getElementById('status-message').textContent = 'Weight data deleted successfully!';
+            }
+            if (e.target.classList.contains('save-edit-button')) {
+                const index = e.target.getAttribute('data-index');
+                const row = e.target.closest('tr');
+                const inputs = row.querySelectorAll('input');
+                const updatedWeight = {};
+                inputs.forEach(input => {
+                    updatedWeight[input.dataset.field] = input.value;
+                });
+                weightData[index] = updatedWeight;
+                saveWeightDataToLocalStorage();
+                updateWeightTable();
+                document.getElementById('status-message').textContent = 'Weight data updated successfully!';
+            }
+        });
+
+        document.getElementById('export-weight-button').addEventListener('click', () => {
+            let csv = 'Source,Fem,Arrival Date,Arrival Weight,Weight in m1,Weight in m2,Weight in m3,Date of Sale,Bought Price,Sale Price,Gross Revenue\n';
+            weightData.forEach(weight => {
+                csv += `${weight.source},${weight.fem},${weight.arrivalDate},${weight.arrivalWeight},${weight.weightM1},${weight.weightM2},${weight.weightM3},${weight.dateOfSale},${weight.boughtPrice},${weight.salePrice},${weight.grossRevenue}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'weight_data.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        document.getElementById('import-weight-button').addEventListener('click', () => {
+            const fileInput = document.getElementById('import-weight-file');
+            if (fileInput.files.length === 0) {
+                alert('Please select a file to import.');
+                return;
+            }
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const content = e.target.result;
+                const lines = content.split('\n');
+                weightData = [];
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].split(',');
+                    if (line.length === 11) {
+                        weightData.push({
+                            source: line[0],
+                            fem: line[1],
+                            arrivalDate: line[2],
+                            arrivalWeight: line[3],
+                            weightM1: line[4],
+                            weightM2: line[5],
+                            weightM3: line[6],
+                            dateOfSale: line[7],
+                            boughtPrice: line[8],
+                            salePrice: line[9],
+                            grossRevenue: line[10]
+                        });
+                    }
+                }
+                saveWeightDataToLocalStorage();
+                updateWeightTable();
+                document.getElementById('status-message').textContent = 'Weight data imported successfully!';
+            };
+            reader.readAsText(file);
+        });
+
+        // Expandable/Collapsible Form Functionality
+        document.getElementById('toggle-form-button').addEventListener('click', () => {
+            const formContainer = document.getElementById('weight-form-container');
+            formContainer.classList.toggle('open');
+            const isOpen = formContainer.classList.contains('open');
+            document.getElementById('toggle-form-button').textContent = isOpen ? 'Hide Weight Form' : 'Show Weight Form';
+        });
+
+        updateWeightTable(); // Initial table population
+    </script>
+</body>
+</html>
